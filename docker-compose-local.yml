@@ -1,0 +1,26 @@
+version: "3.8"
+services:
+  pharmacy-recommendation-redis:
+    container_name: pharmacy-recommendation-redis
+    build:
+      dockerfile: Dockerfile
+      context: ./redis
+    image: kpwernner/pharmacy-recommendation-redis
+    ports:
+      - "6379:6379"
+  pharmacy-recommendation-database:
+    container_name: pharmacy-recommendation-database
+    build:
+      dockerfile: Dockerfile
+      context: ./database
+    image: kpwernner/pharmacy-recommendation-database
+    environment:
+      - MARIADB_DATABASE=pharmacy-recommendation            # 이름
+      - MARIADB_ROOT_PASSWORD=${SPRING_DATASOURCE_PASSWORD} # 뒤에서 주입한다고 함. 이부분이 깃헙에 올라가면 안된다고 함.
+                                                            # .gitignore에 추가
+    volumes:
+      - ./database/config:/etc/mysql/conf.d #뒤에가 도커 directory이것이 앞에 host를 참조하여 초기화
+      - ./database/init:/docker-entrypoint-initdb.d
+    ports:
+      - "3306:3306"
+
