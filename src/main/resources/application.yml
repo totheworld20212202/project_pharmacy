@@ -63,3 +63,4 @@ pharmacy:
   recommendation:
     base:
       url: http://43.201.122.56/dir/  # reserved to modify after aws ec2 ip is assigned
+      #test
